@@ -20,6 +20,14 @@ const usersRoute = require("./routes/usersRoute.js");
 app.use("/users", usersRoute);
 const citiesRoute = require("./routes/cititesRoute.js");
 app.use("/cities", citiesRoute);
+const centersRoute = require("./routes/centersRoute.js");
+app.use("/centers", centersRoute);
+const roomsRoute = require("./routes/roomsRoute.js");
+app.use("/rooms", roomsRoute);
+const keysRoute = require("./routes/keysRoute.js");
+app.use("/keys", keysRoute);
+const employeesRoute = require("./routes/employeesRoute.js");
+app.use("/employees", employeesRoute);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
