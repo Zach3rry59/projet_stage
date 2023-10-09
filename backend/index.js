@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 dotenv.config("/.env");
 const app = express();
 const port = 3002;
+const socket = require("./socket");
 
 app.use(express.json());
 app.use(
@@ -15,6 +16,12 @@ app.use(
   })
 );
 app.use(cookieParser());
+
+const server = app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+socket.connect(server);
 
 const usersRoute = require("./routes/usersRoute.js");
 app.use("/users", usersRoute);
@@ -28,7 +35,3 @@ const keysRoute = require("./routes/keysRoute.js");
 app.use("/keys", keysRoute);
 const employeesRoute = require("./routes/employeesRoute.js");
 app.use("/employees", employeesRoute);
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});

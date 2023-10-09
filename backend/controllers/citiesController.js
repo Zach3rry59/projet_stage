@@ -1,4 +1,5 @@
 const City = require("../models/citiesModel");
+const socket = require("../socket");
 
 const handleError = (res, error) => {
   console.error(error);
@@ -11,7 +12,10 @@ const handleError = (res, error) => {
 exports.create = async (req, res) => {
   try {
     const newCity = req.body;
+    newCity.modified_at = new Date();
+    console.log(newCity);
     const city = await City.create(newCity);
+    socket.emit("newCity");
     res.status(201).json(city);
   } catch (error) {
     handleError(res, error);

@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS `projet_stage`;
 USE `projet_stage`;
 
 CREATE TABLE IF NOT EXISTS `user`(
-   id INT NOT NULL,
+   id INT NOT NULL AUTO_INCREMENT,
    username VARCHAR(50) NOT NULL,
    password VARCHAR(255) NOT NULL,
    role INT NOT NULL,
@@ -11,14 +11,14 @@ CREATE TABLE IF NOT EXISTS `user`(
 );
 
 CREATE TABLE IF NOT EXISTS `city`(
-   id INT NOT NULL,
+   id INT NOT NULL AUTO_INCREMENT,
    name VARCHAR(50) NOT NULL,
    modified_at DATETIME,
    PRIMARY KEY(id)
 );
 
 CREATE TABLE IF NOT EXISTS `center`(
-   id INT NOT NULL,
+   id INT NOT NULL AUTO_INCREMENT,
    name VARCHAR(50),
    cp INT,
    adress VARCHAR(50),
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `center`(
 );
 
 CREATE TABLE IF NOT EXISTS `employee`(
-   id INT,
+   id INT NOT NULL AUTO_INCREMENT,
    firstname VARCHAR(50) NOT NULL,
    lastname VARCHAR(50),
    formation VARCHAR(100),
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `employee`(
 );
 
 CREATE TABLE IF NOT EXISTS `room`(
-   id INT,
+   id INT NOT NULL AUTO_INCREMENT,
    name VARCHAR(50) NOT NULL,
    date_start DATE,
    date_end DATE,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `room`(
 );
 
 CREATE TABLE IF NOT EXISTS `key`(
-   id INT,
+   id INT NOT NULL AUTO_INCREMENT,
    id_employee INT,
    id_center INT NOT NULL,
    PRIMARY KEY(id),
