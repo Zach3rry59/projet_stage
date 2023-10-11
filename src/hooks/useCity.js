@@ -13,7 +13,6 @@ export function useCities() {
           return setCities(null);
         }
         setCities(values.data);
-        console.log(values.data);
       })
       .catch(() => setCities(null));
   };

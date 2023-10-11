@@ -4,12 +4,35 @@ import Login from "../components/Login/Login";
 import { AuthStatus, useAuth } from "../hooks/useAuth";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
+import { useCities } from "../hooks/useCity";
+import { useCenters } from "../hooks/useCenter";
+import socketIOClient from "socket.io-client";
 
 function App() {
   const { status, authenticate } = useAuth();
 
+  const { fetchCities } = useCities();
+  const { fetchCenters } = useCenters();
+  const BASE_URL = "http://localhost:3002";
+
   useEffect(() => {
+    const socket = socketIOClient(BASE_URL);
     authenticate();
+    fetchCities();
+    fetchCenters();
+    socket.on("newCity", () => {
+      fetchCities();
+      console.log("NEW CITY !");
+    });
+    socket.on("newCenter", () => {
+      fetchCenters();
+      console.log("NEW CENTER !");
+    });
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
   }, []);
 
   if (status === AuthStatus.Unknown) {

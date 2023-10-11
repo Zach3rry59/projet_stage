@@ -1,5 +1,5 @@
 const Center = require("../models/centersModel");
-
+const socket = require("../socket");
 const handleError = (res, error) => {
   console.error(error);
   if (error.kind === "not_found") {
@@ -17,6 +17,7 @@ exports.create = async (req, res) => {
   try {
     const newCenter = req.body;
     const center = await Center.create(newCenter);
+    socket.emit("newCenter");
     res.status(201).json(center);
   } catch (error) {
     handleError(res, error);
