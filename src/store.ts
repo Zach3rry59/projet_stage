@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { Account, City, Center } from "./types/types";
+import { Account, City, Center, Room } from "./types/types";
 
 export const useAccountStore = create(
   combine(
@@ -31,6 +31,17 @@ export const useCenterStore = create(
     },
     (set) => ({
       setCenters: (centers: Center | null) => set({ centers }),
+    })
+  )
+);
+
+export const useRoomStore = create(
+  combine(
+    {
+      rooms: undefined as undefined | null | Room,
+    },
+    (set) => ({
+      setRooms: (rooms: Room | null) => set({ rooms }),
     })
   )
 );

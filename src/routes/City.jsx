@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useCities } from "../../hooks/useCity";
-import { useCenters } from "../../hooks/useCenter";
+import { useCities } from "../hooks/useCities";
+import { useCenters } from "../hooks/useCenters";
+import { useToggle } from "../hooks/useToggle";
 
 const City = () => {
   const { cities } = useCities();
   const { centers } = useCenters();
-
-  const [openCities, setOpenCities] = useState([]);
+  const { openElements, toggle } = useToggle("city");
   const [searchText, setSearchText] = useState("");
 
   if (!cities && !centers) {
@@ -16,14 +16,6 @@ const City = () => {
       </div>
     );
   }
-
-  const toggleCity = (cityId) => {
-    if (openCities.includes(cityId)) {
-      setOpenCities(openCities.filter((id) => id !== cityId));
-    } else {
-      setOpenCities([...openCities, cityId]);
-    }
-  };
 
   const filteredCities = cities
     ? cities.filter((city) =>
@@ -44,20 +36,19 @@ const City = () => {
 
       <ul>
         {filteredCities.map((city) => (
-          <li
-            key={city.id}
-            onClick={() => toggleCity(city.id)}
-            className="cursor-pointer bg-white p-4 mb-2 rounded shadow"
-          >
-            <span className="flex justify-between items-center">
-              {city.name}
-              {openCities.includes(city.id) ? (
+          <li key={city.id} className=" bg-white p-4 mb-2 rounded shadow">
+            <span
+              className="flex justify-between cursor-pointer items-center"
+              onClick={(e) => toggle(city.id, e)}
+            >
+              <span id="link">{city.name}</span>
+              {openElements.includes(city.id) ? (
                 <span className="text-green-500">&#9660;</span>
               ) : (
                 <span className="text-gray-500">&#9654;</span>
               )}
             </span>
-            {openCities.includes(city.id) && (
+            {openElements.includes(city.id) && (
               <div className="mt-2">
                 {centers.filter((center) => center.id_city === city.id).length >
                 0 ? (

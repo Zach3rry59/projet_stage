@@ -5,13 +5,9 @@ export function useCenters() {
   const { centers, setCenters } = useCenterStore();
   const BASE_URL = "http://localhost:3002";
 
-  const fetchCenters = (id = 0) => {
-    let url = `${BASE_URL}/centers/all`;
-    if (id !== 0) {
-      url = `${BASE_URL}/centers/center/${id}`;
-    }
+  const fetchCenters = () => {
     axios
-      .get(url)
+      .get(`${BASE_URL}/centers/all`)
       .then((values) => {
         if (values.data.Error) {
           return setCenters(null);

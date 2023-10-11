@@ -1,4 +1,5 @@
 const Room = require("../models/roomsModel");
+const socket = require("../socket");
 
 const handleError = (res, error) => {
   console.error(error);
@@ -17,6 +18,7 @@ exports.create = async (req, res) => {
   try {
     const newRoom = req.body;
     const room = await Room.create(newRoom);
+    socket.emit("newCenter");
     res.status(201).json(room);
   } catch (error) {
     handleError(res, error);

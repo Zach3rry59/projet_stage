@@ -1,7 +1,7 @@
 import { useState } from "react";
-import CityEditModal from "./CityModal/CityModal";
+import CityEditModal from "./CityEdit/CityEdit";
 import CityList from "./CityList/CityList";
-import { useCities } from "../../../hooks/useCity";
+import { useCities } from "../../../hooks/useCities";
 
 const AdminCity = () => {
   const [selectedCity, setSelectedCity] = useState(null);

@@ -47,7 +47,7 @@ Room.getAll = () => {
 
 Room.getAllByCenterId = (id) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM room WHERE id_center = ?";
+    const query = "SELECT * FROM room WHERE center_id = ?";
     sql.query(query, id, (err, res) => {
       if (err) {
         reject(err);

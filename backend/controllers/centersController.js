@@ -1,5 +1,6 @@
 const Center = require("../models/centersModel");
 const socket = require("../socket");
+
 const handleError = (res, error) => {
   console.error(error);
   if (error.kind === "not_found") {

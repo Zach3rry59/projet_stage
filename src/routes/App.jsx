@@ -4,29 +4,39 @@ import Login from "../components/Login/Login";
 import { AuthStatus, useAuth } from "../hooks/useAuth";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
-import { useCities } from "../hooks/useCity";
-import { useCenters } from "../hooks/useCenter";
+import { useCities } from "../hooks/useCities";
+import { useCenters } from "../hooks/useCenters";
 import socketIOClient from "socket.io-client";
+import { useRooms } from "../hooks/useRooms";
 
 function App() {
   const { status, authenticate } = useAuth();
-
   const { fetchCities } = useCities();
   const { fetchCenters } = useCenters();
+  const { fetchRooms } = useRooms();
   const BASE_URL = "http://localhost:3002";
 
   useEffect(() => {
-    const socket = socketIOClient(BASE_URL);
     authenticate();
+  }, [status]);
+
+  useEffect(() => {
+    const socket = socketIOClient(BASE_URL);
     fetchCities();
     fetchCenters();
     socket.on("newCity", () => {
       fetchCities();
       console.log("NEW CITY !");
     });
+
     socket.on("newCenter", () => {
       fetchCenters();
       console.log("NEW CENTER !");
+    });
+
+    socket.on("newRoom", () => {
+      fetchRooms();
+      console.log("NEW ROOM !");
     });
     return () => {
       if (socket) {

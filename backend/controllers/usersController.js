@@ -182,7 +182,9 @@ exports.login = async (req, res) => {
         path: "/",
         sameSite: "strict",
       });
-      res.status(200).json({ message: "Authentification réussi.", token });
+      res
+        .status(200)
+        .json({ message: "Authentification réussi.", token, role: user.role });
     });
   } catch (error) {
     res
