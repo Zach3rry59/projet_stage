@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useCities } from "../hooks/useCities";
 import { useCenters } from "../hooks/useCenters";
-import { useToggle } from "../hooks/useToggle";
+import List from "../components/List/List";
 
 const City = () => {
   const { cities } = useCities();
   const { centers } = useCenters();
-  const { openElements, toggle } = useToggle("city");
   const [searchText, setSearchText] = useState("");
 
   if (!cities && !centers) {
@@ -34,52 +33,19 @@ const City = () => {
         className="border p-2 rounded mb-4"
       />
 
-      <ul>
-        {filteredCities.map((city) => (
-          <li key={city.id} className=" bg-white p-4 mb-2 rounded shadow">
-            <span
-              className="flex justify-between cursor-pointer items-center"
-              onClick={(e) => toggle(city.id, e)}
-            >
-              <span id="link">{city.name}</span>
-              {openElements.includes(city.id) ? (
-                <span className="text-green-500">&#9660;</span>
-              ) : (
-                <span className="text-gray-500">&#9654;</span>
-              )}
-            </span>
-            {openElements.includes(city.id) && (
-              <div className="mt-2">
-                {centers.filter((center) => center.id_city === city.id).length >
-                0 ? (
-                  <table className="w-full">
-                    <thead>
-                      <tr>
-                        <th>Nom du Centre</th>
-                        <th>Code Postal</th>
-                        <th>Adresse</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {centers
-                        .filter((center) => center.id_city === city.id)
-                        .map((center) => (
-                          <tr key={center.id}>
-                            <td>{center.name}</td>
-                            <td>{center.cp}</td>
-                            <td>{center.adress}</td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p>Aucun centre disponible</p>
-                )}
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+      <List
+        items={filteredCities}
+        subItems={centers}
+        parentItemIdField={"id_city"}
+        childItemRoute={"/center"}
+        itemRoute={"city"}
+        noItemPlaceholder={"Aucune centre disponible"}
+        tableColumnHeaders={{
+          name: "Nom du centre",
+          cp: "Code Postal",
+          adress: "Adresse",
+        }}
+      />
     </div>
   );
 };

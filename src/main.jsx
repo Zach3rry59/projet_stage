@@ -4,15 +4,14 @@ import App from "./routes/App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page.jsx";
-import City from "./routes/City.jsx";
-import Center from "./components/Center/Center.jsx";
 import Room from "./components/Room/Room.jsx";
 import AdminCity from "./components/Admin/City/AdminCity.jsx";
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import CityAdd from "./components/Admin/City/CityAdd/CityAdd.jsx";
 import CityEdit from "./components/Admin/City/CityEdit/CityEdit.jsx";
-import Contact from "./routes/CityDetails.jsx";
-
+import Center from "./routes/Center.jsx";
+import City from "./routes/City.jsx";
+import CenterDetails from "./routes/CenterDetails.jsx";
 export const ComponentA = () => {
   return <div>Contenu du Menu 1</div>;
 };
@@ -33,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: "city/:id",
-        element: <Contact />,
+        element: <Center />,
       },
       {
         path: "/menu1",
@@ -44,8 +43,8 @@ const router = createBrowserRouter([
         element: <ComponentB />,
       },
       {
-        path: "/center/:centerId",
-        element: <Center />,
+        path: "/center/:id",
+        element: <CenterDetails />,
       },
       {
         path: "/room/:roomId",

@@ -6,7 +6,7 @@ export const useToggle = (element) => {
   const navigate = useNavigate();
 
   const toggle = (elementId, e) => {
-    if (e.target.id.includes("link")) {
+    if (e.target.classList.contains("link")) {
       return navigate(`/${element}/${elementId}`);
     }
     if (openElements.includes(elementId)) {

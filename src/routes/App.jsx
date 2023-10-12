@@ -34,10 +34,6 @@ function App() {
       console.log("NEW CENTER !");
     });
 
-    socket.on("newRoom", () => {
-      fetchRooms();
-      console.log("NEW ROOM !");
-    });
     return () => {
       if (socket) {
         socket.disconnect();

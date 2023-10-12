@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
   try {
     const newRoom = req.body;
     const room = await Room.create(newRoom);
-    socket.emit("newCenter");
+    socket.emit("newRoom");
     res.status(201).json(room);
   } catch (error) {
     handleError(res, error);
@@ -34,9 +34,11 @@ exports.findById = async (req, res) => {
   }
 };
 
-exports.getAllByCenterId = async (req, res) => {
+exports.getAllByCenterIds = async (req, res) => {
   try {
-    const rooms = await Room.getAllByCenterId(req.params.id);
+    const { ids } = req.query;
+    const centerIds = ids.split(",").map((id) => parseInt(id));
+    const rooms = await Room.getAllByCenterIds(centerIds);
     res.status(200).json(rooms);
   } catch (error) {
     handleError(res, error);

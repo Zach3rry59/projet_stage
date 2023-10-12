@@ -5,10 +5,11 @@ export function useRooms() {
   const { rooms, setRooms } = useRoomStore();
   const BASE_URL = "http://localhost:3002";
 
-  const fetchRooms = (id = 0) => {
+  const fetchRooms = (ids = 0) => {
     let URL = `${BASE_URL}/rooms/all`;
-    if (id !== 0) {
-      URL = `${BASE_URL}/rooms/center/${id}`;
+    if (ids !== 0) {
+      const idQuerry = ids.map((item) => item.id);
+      URL = `${BASE_URL}/rooms/centers?ids=${idQuerry}`;
     }
     axios
       .get(URL)
@@ -16,9 +17,8 @@ export function useRooms() {
         if (values.data.Error) {
           return setRooms(null);
         }
-
+        console.log("fetching");
         setRooms(values.data);
-        console.log(values.data);
       })
       .catch(() => setRooms(null));
   };
