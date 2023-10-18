@@ -17,7 +17,6 @@ export function useRooms() {
         if (values.data.Error) {
           return setRooms(null);
         }
-        console.log("fetching");
         setRooms(values.data);
       })
       .catch(() => setRooms(null));

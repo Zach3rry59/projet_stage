@@ -4,11 +4,14 @@ import { useRooms } from "../hooks/useRooms";
 import { useNavigate, useParams } from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import List from "../components/List/List";
+import { useKeys } from "../hooks/useKeys";
+import KeysList from "../components/KeysList/KeysList";
 const BASE_URL = "http://localhost:3002";
 
 const CenterDetails = () => {
   const { centers } = useCenters();
   const { rooms, fetchRooms } = useRooms();
+  const { keys, fetchKeys } = useKeys();
   const { id } = useParams();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ const CenterDetails = () => {
       return navigate("/");
     } else {
       fetchRooms([center]);
+      fetchKeys(center.id);
 
       socket.on("newRoom", () => {
         fetchRooms(center);
@@ -51,6 +55,10 @@ const CenterDetails = () => {
         <h2 className="text-2xl font-bold mb-4">
           {center && `${center.name}`}
         </h2>
+        <div>
+          <h3>Clé disponible :</h3>
+          <KeysList keys={keys} />
+        </div>
         <button
           onClick={() => window.history.back()}
           className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"

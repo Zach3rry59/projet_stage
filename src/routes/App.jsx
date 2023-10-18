@@ -7,13 +7,11 @@ import { Outlet } from "react-router-dom";
 import { useCities } from "../hooks/useCities";
 import { useCenters } from "../hooks/useCenters";
 import socketIOClient from "socket.io-client";
-import { useRooms } from "../hooks/useRooms";
 
 function App() {
   const { status, authenticate } = useAuth();
   const { fetchCities } = useCities();
   const { fetchCenters } = useCenters();
-  const { fetchRooms } = useRooms();
   const BASE_URL = "http://localhost:3002";
 
   useEffect(() => {
