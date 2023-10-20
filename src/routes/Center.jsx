@@ -8,9 +8,9 @@ import List from "../components/List/List";
 const BASE_URL = "http://localhost:3002";
 
 const Center = () => {
-  const { cities } = useCities();
+  const { cities, loading: citiesLoading } = useCities();
   const { centers } = useCenters();
-  const { rooms, fetchRooms } = useRooms();
+  const { rooms, loading: roomsLoading, fetchRooms } = useRooms();
   const [searchText, setSearchText] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -21,22 +21,21 @@ const Center = () => {
 
   useEffect(() => {
     const socket = socketIOClient(BASE_URL);
-    if (!city) {
+    if (!roomsLoading && !city) {
       return navigate("/");
     } else {
       fetchRooms(cityCenters);
 
       socket.on("newRoom", () => {
         fetchRooms(cityCenters);
-        console.log("NEW ROOM !");
       });
     }
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [roomsLoading, citiesLoading]);
 
-  if (!city) {
+  if (!city && !centers && !rooms) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
@@ -68,6 +67,7 @@ const Center = () => {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         placeholder="Nom du centre"
+        name="search"
         className="border p-2 rounded mb-4"
       />
 
@@ -84,6 +84,7 @@ const Center = () => {
           date_start: "Début formation",
           date_end: "Fin formation",
         }}
+        showRowMobile={2}
       />
     </div>
   );

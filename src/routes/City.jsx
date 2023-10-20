@@ -30,6 +30,7 @@ const City = () => {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         placeholder="Nom de la ville"
+        name="search"
         className="border p-2 rounded mb-4"
       />
 

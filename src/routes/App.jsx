@@ -24,12 +24,10 @@ function App() {
     fetchCenters();
     socket.on("newCity", () => {
       fetchCities();
-      console.log("NEW CITY !");
     });
 
     socket.on("newCenter", () => {
       fetchCenters();
-      console.log("NEW CENTER !");
     });
 
     return () => {
@@ -59,7 +57,9 @@ function App() {
   }
   return (
     <div id="container">
-      <Sidebar className="sidebar" />
+      <div className="hidden md:block">
+        <Sidebar className="sidebar" />
+      </div>
       <div className="main">
         <Outlet />
       </div>

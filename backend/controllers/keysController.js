@@ -1,4 +1,5 @@
 const Key = require("../models/keysModel");
+const socket = require("../socket");
 
 const handleError = (res, error) => {
   console.error(error);
@@ -17,6 +18,7 @@ exports.create = async (req, res) => {
   try {
     const newKey = req.body;
     const key = await Key.create(newKey);
+    socket.emit("newKey");
     res.status(201).json(key);
   } catch (error) {
     handleError(res, error);

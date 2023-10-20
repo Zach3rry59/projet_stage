@@ -10,30 +10,35 @@ const BASE_URL = "http://localhost:3002";
 
 const CenterDetails = () => {
   const { centers } = useCenters();
-  const { rooms, fetchRooms } = useRooms();
+  const { rooms, loading: roomsLoading, fetchRooms } = useRooms();
   const { keys, fetchKeys } = useKeys();
   const { id } = useParams();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
-  const center = centers?.find((center) => center.id === parseInt(id));
+  const center = centers?.find(
+    (center) => center && center.id === parseInt(id)
+  );
 
   useEffect(() => {
     const socket = socketIOClient(BASE_URL);
-    if (!center) {
+    if (!center && !roomsLoading) {
       return navigate("/");
     } else {
-      fetchRooms([center]);
-      fetchKeys(center.id);
+      fetchKeys(center?.id);
+      fetchRooms(center?.id);
 
       socket.on("newRoom", () => {
-        fetchRooms(center);
-        console.log("NEW ROOM !");
+        fetchRooms([center]);
+      });
+
+      socket.on("newKey", () => {
+        fetchKeys(center.id);
       });
     }
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [roomsLoading]);
 
   if (!center) {
     return (
@@ -55,10 +60,7 @@ const CenterDetails = () => {
         <h2 className="text-2xl font-bold mb-4">
           {center && `${center.name}`}
         </h2>
-        <div>
-          <h3>Clé disponible :</h3>
-          <KeysList keys={keys} />
-        </div>
+        <KeysList keys={keys} />
         <button
           onClick={() => window.history.back()}
           className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
@@ -71,6 +73,7 @@ const CenterDetails = () => {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         placeholder="Nom du centre"
+        name="search"
         className="border p-2 rounded mb-4"
       />
 
@@ -83,9 +86,11 @@ const CenterDetails = () => {
         noItemPlaceholder={"Aucune détails disponible"}
         tableColumnHeaders={{
           formation_name: "Nom de la formation",
+          employee_id: "Formateur",
           date_start: "Début formation",
           date_end: "Fin formation",
         }}
+        showRowMobile={2}
       />
     </div>
   );

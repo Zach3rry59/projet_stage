@@ -16,7 +16,6 @@ export function useKeys() {
         if (values.data.Error) {
           return setKeys(null);
         }
-        console.log("fetching");
         setKeys(values.data);
       })
       .catch(() => setKeys(null));

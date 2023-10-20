@@ -40,15 +40,15 @@ const AdminCity = () => {
         >
           Ajouter Ville
         </button>
+        {isModalOpen && (
+          <CityEditModal city={selectedCity} onClose={handleModalClose} />
+        )}
       </div>
       <CityList
         cities={cities}
         onRemoveClick={handleRemoveClick}
         onEditClick={handleEditClick}
       />
-      {isModalOpen && (
-        <CityEditModal city={selectedCity} onClose={handleModalClose} />
-      )}
     </div>
   );
 };
