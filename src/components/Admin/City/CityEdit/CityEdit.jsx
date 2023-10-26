@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 const CityEdit = ({ city, onClose }) => {
   const formik = useFormik({
     initialValues: {
-      name: city?.name || "",
+      name: "",
     },
     validate: (values) => {
       const errors = {};

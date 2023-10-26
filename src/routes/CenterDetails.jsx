@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCenters } from "../hooks/useCenters";
 import { useRooms } from "../hooks/useRooms";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import List from "../components/List/List";
 import { useKeys } from "../hooks/useKeys";
@@ -10,35 +10,31 @@ const BASE_URL = "http://localhost:3002";
 
 const CenterDetails = () => {
   const { centers } = useCenters();
-  const { rooms, loading: roomsLoading, fetchRooms } = useRooms();
+  const { rooms, fetchRooms } = useRooms();
   const { keys, fetchKeys } = useKeys();
   const { id } = useParams();
   const [searchText, setSearchText] = useState("");
-  const navigate = useNavigate();
   const center = centers?.find(
     (center) => center && center.id === parseInt(id)
   );
 
   useEffect(() => {
     const socket = socketIOClient(BASE_URL);
-    if (!center && !roomsLoading) {
-      return navigate("/");
-    } else {
-      fetchKeys(center?.id);
-      fetchRooms(center?.id);
+    fetchKeys(id);
+    fetchRooms(id);
 
-      socket.on("newRoom", () => {
-        fetchRooms([center]);
-      });
+    socket.on("newRoom", () => {
+      fetchRooms([center]);
+    });
 
-      socket.on("newKey", () => {
-        fetchKeys(center.id);
-      });
-    }
+    socket.on("newKey", () => {
+      fetchKeys(center.id);
+    });
+
     return () => {
       socket.disconnect();
     };
-  }, [roomsLoading]);
+  }, []);
 
   if (!center) {
     return (
@@ -81,7 +77,6 @@ const CenterDetails = () => {
         items={filteredRooms}
         subItems={filteredRooms}
         parentItemIdField={"id"}
-        childItemRoute={"/room"}
         itemRoute={"room"}
         noItemPlaceholder={"Aucune détails disponible"}
         tableColumnHeaders={{

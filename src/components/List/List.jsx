@@ -9,7 +9,7 @@ const List = ({
   subItems,
   parentItemIdField,
   itemRoute,
-  childItemRoute,
+  childItemRoute = 0,
   noItemPlaceholder,
   tableColumnHeaders,
   showRowMobile,
@@ -96,9 +96,15 @@ const List = ({
                         .map((subItem) => (
                           <tr
                             key={subItem.id}
-                            className="cursor-pointer hover:text-blue-500 border"
+                            className={`${
+                              childItemRoute !== 0
+                                ? "cursor-pointer border hover:text-blue-500"
+                                : ""
+                            }`}
                             onClick={() => {
-                              navigate(`${childItemRoute}/${subItem.id}`);
+                              if (childItemRoute !== 0) {
+                                navigate(`${childItemRoute}/${subItem.id}`);
+                              }
                             }}
                           >
                             {tableHeaders.map((header, index) => {

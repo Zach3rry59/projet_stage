@@ -1,21 +1,21 @@
-const CityList = ({ cities, onEditClick, onRemoveClick }) => {
+const AdminList = ({ items, onEditClick, onRemoveClick }) => {
   return (
     <ul className="mt-4">
-      {cities.map((city) => (
+      {items.map((item) => (
         <li
-          key={city.id}
+          key={item.id}
           className="bg-white p-4 mb-2 rounded shadow flex justify-between items-center"
         >
-          {city.name}
+          {item.name}
           <div>
             <button
-              onClick={() => onEditClick(city)}
+              onClick={() => onEditClick(item)}
               className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
             >
               Editer
             </button>
             <button
-              onClick={() => onRemoveClick(city)}
+              onClick={() => onRemoveClick(item)}
               className="text-red-500 px-2 py-1 rounded hover:bg-red-200 focus:outline-none focus:ring focus:border-red-300"
             >
               Supprimer
@@ -27,4 +27,4 @@ const CityList = ({ cities, onEditClick, onRemoveClick }) => {
   );
 };
 
-export default CityList;
+export default AdminList;

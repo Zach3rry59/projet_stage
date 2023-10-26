@@ -1,7 +1,8 @@
 import { useState } from "react";
-import CityEditModal from "./CityEdit/CityEdit";
-import CityList from "./CityList/CityList";
-import { useCities } from "../../../hooks/useCities";
+import CityEdit from "../../components/Admin/City/CityEdit/CityEdit";
+import CityList from "../../components/Admin/AdminList/AdminList";
+import { useCities } from "../../hooks/useCities";
+import CityAdd from "../../components/Admin/City/CityAdd/CityAdd";
 
 const AdminCity = () => {
   const [selectedCity, setSelectedCity] = useState(null);
@@ -14,7 +15,13 @@ const AdminCity = () => {
   };
 
   const handleRemoveClick = (city) => {
-    console.log("supprimer", city.id);
+    const isConfirmed = window.confirm(
+      `Êtes-vous sûr de vouloir supprimer la ville : ${city.name}?`
+    );
+
+    if (isConfirmed) {
+      console.log("City removed:", city.id);
+    }
   };
 
   const handleModalClose = () => {
@@ -28,7 +35,11 @@ const AdminCity = () => {
   };
 
   if (!cities) {
-    return <div>Loading</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      </div>
+    );
   }
   return (
     <div className="container mx-auto my-8 p-4 bg-gray-100 rounded-lg">
@@ -40,12 +51,15 @@ const AdminCity = () => {
         >
           Ajouter Ville
         </button>
-        {isModalOpen && (
-          <CityEditModal city={selectedCity} onClose={handleModalClose} />
-        )}
+        {isModalOpen &&
+          (selectedCity ? (
+            <CityEdit city={selectedCity} onClose={handleModalClose} />
+          ) : (
+            <CityAdd onClose={handleModalClose} />
+          ))}
       </div>
       <CityList
-        cities={cities}
+        items={cities}
         onRemoveClick={handleRemoveClick}
         onEditClick={handleEditClick}
       />
