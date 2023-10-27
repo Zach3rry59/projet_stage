@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
-import { Account, City, Center, Room, Key } from "./types/types";
+import { Account, City, Center, Room, Key, Employee } from "./types/types";
 
 export const useAccountStore = create(
   combine(
@@ -53,6 +53,17 @@ export const useKeyStore = create(
     },
     (set) => ({
       setKeys: (keys: Key | null) => set({ keys }),
+    })
+  )
+);
+
+export const useEmployeeStore = create(
+  combine(
+    {
+      employees: undefined as undefined | null | Employee,
+    },
+    (set) => ({
+      setEmployees: (employees: Employee | null) => set({ employees }),
     })
   )
 );

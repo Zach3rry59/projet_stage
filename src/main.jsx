@@ -11,6 +11,7 @@ import Center from "./routes/Center.jsx";
 import City from "./routes/City.jsx";
 import CenterDetails from "./routes/CenterDetails.jsx";
 import AllCenter from "./routes/AllCenter.jsx";
+import Employee from "./routes/Employee.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +27,14 @@ const router = createBrowserRouter([
         element: <AllCenter />,
       },
       {
+        path: "/employee/:id",
+        element: <Employee />,
+      },
+      {
+        path: "/employee",
+        element: <Employee />,
+      },
+      {
         path: "city/:id",
         element: <Center />,
       },
@@ -34,7 +43,27 @@ const router = createBrowserRouter([
         element: <CenterDetails />,
       },
       {
-        path: "/admin",
+        path: "/admin-city",
+        element: <PrivateRoute element={AdminCity} />,
+      },
+      {
+        path: "/admin-center",
+        element: <PrivateRoute element={AdminCity} />,
+      },
+      {
+        path: "/admin-room",
+        element: <PrivateRoute element={AdminCity} />,
+      },
+      {
+        path: "/admin-key",
+        element: <PrivateRoute element={AdminCity} />,
+      },
+      {
+        path: "/admin-employee",
+        element: <PrivateRoute element={AdminCity} />,
+      },
+      {
+        path: "/admin-user",
         element: <PrivateRoute element={AdminCity} />,
       },
     ],
