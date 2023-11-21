@@ -1,40 +1,21 @@
-import { useEffect, useState } from "react";
 import { useCenters } from "../hooks/useCenters";
 import { useRooms } from "../hooks/useRooms";
 import { useParams } from "react-router-dom";
-import socketIOClient from "socket.io-client";
 import List from "../components/List/List";
 import { useKeys } from "../hooks/useKeys";
 import KeysList from "../components/KeysList/KeysList";
-const BASE_URL = "http://localhost:3002";
 
 const CenterDetails = () => {
   const { centers } = useCenters();
-  const { rooms, fetchRooms } = useRooms();
-  const { keys, fetchKeys } = useKeys();
+  const { rooms } = useRooms();
+  const { keys } = useKeys();
   const { id } = useParams();
-  const [searchText, setSearchText] = useState("");
   const center = centers?.find(
     (center) => center && center.id === parseInt(id)
   );
 
-  useEffect(() => {
-    const socket = socketIOClient(BASE_URL);
-    fetchKeys(id);
-    fetchRooms(id);
-
-    socket.on("newRoom", () => {
-      fetchRooms([center]);
-    });
-
-    socket.on("newKey", () => {
-      fetchKeys(center.id);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const centerRooms =
+    rooms?.filter((room) => room.id_center === parseInt(id)) ?? [];
 
   if (!center) {
     return (
@@ -44,11 +25,7 @@ const CenterDetails = () => {
     );
   }
 
-  const filteredRooms = rooms
-    ? rooms.filter((room) =>
-        room.name.toLowerCase().includes(searchText.toLowerCase())
-      )
-    : [];
+  const safeRooms = centerRooms ? centerRooms : [];
 
   return (
     <div className="container mx-auto my-8 p-4 bg-gray-100 rounded-lg">
@@ -59,29 +36,21 @@ const CenterDetails = () => {
         <KeysList keys={keys} />
         <button
           onClick={() => window.history.back()}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+          className="bg-green-700 text-white px-2 py-1 rounded hover:bg-green-800 focus:outline-none focus:ring focus:border-green-300 mb-2"
         >
           Retour
         </button>
       </div>
-      <input
-        type="text"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-        placeholder="Nom du centre"
-        name="search"
-        className="border p-2 rounded mb-4"
-      />
 
       <List
-        items={filteredRooms}
-        subItems={filteredRooms}
+        items={safeRooms}
+        subItems={safeRooms}
         parentItemIdField={"id"}
         itemRoute={"room"}
         noItemPlaceholder={"Aucune détails disponible"}
         tableColumnHeaders={{
           formation_name: "Nom de la formation",
-          employee_id: "Formateur",
+          id_employee: "Formateur",
           date_start: "Début formation",
           date_end: "Fin formation",
         }}

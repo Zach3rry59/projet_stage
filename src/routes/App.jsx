@@ -7,27 +7,50 @@ import { Outlet } from "react-router-dom";
 import { useCities } from "../hooks/useCities";
 import { useCenters } from "../hooks/useCenters";
 import socketIOClient from "socket.io-client";
+import { useEmployee } from "../hooks/useEmployee";
+import { useRooms } from "../hooks/useRooms";
+import { useKeys } from "../hooks/useKeys";
 
 function App() {
   const { status, authenticate } = useAuth();
   const { fetchCities } = useCities();
   const { fetchCenters } = useCenters();
+  const { fetchEmployees } = useEmployee();
+  const { fetchRooms } = useRooms();
+  const { fetchKeys } = useKeys();
+
   const BASE_URL = "http://localhost:3002";
 
   useEffect(() => {
     authenticate();
   }, [status]);
-
   useEffect(() => {
     const socket = socketIOClient(BASE_URL);
+    fetchRooms();
     fetchCities();
     fetchCenters();
+    fetchEmployees();
+    fetchKeys();
+
+    socket.on("newRoom", () => {
+      fetchRooms();
+    });
+
+    socket.on("newKey", () => {
+      fetchKeys();
+    });
+
     socket.on("newCity", () => {
       fetchCities();
+      fetchCenters();
     });
 
     socket.on("newCenter", () => {
       fetchCenters();
+    });
+
+    socket.on("newEmployee", () => {
+      fetchEmployees();
     });
 
     return () => {

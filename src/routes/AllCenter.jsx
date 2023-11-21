@@ -1,33 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCenters } from "../hooks/useCenters";
 import { useRooms } from "../hooks/useRooms";
-import { useNavigate } from "react-router-dom";
-import socketIOClient from "socket.io-client";
 import List from "../components/List/List";
-const BASE_URL = "http://localhost:3002";
 
 const AllCenter = () => {
   const { centers } = useCenters();
-  const { rooms, loading: roomsLoading, fetchRooms } = useRooms();
+  const { rooms } = useRooms();
   const [searchText, setSearchText] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const socket = socketIOClient(BASE_URL);
-    if (!centers && !roomsLoading) {
-      return navigate("/");
-    } else {
-      if (!rooms) {
-        fetchRooms();
-      }
-      socket.on("newRoom", () => {
-        fetchRooms();
-      });
-    }
-    return () => {
-      socket.disconnect();
-    };
-  }, [roomsLoading]);
 
   if (!centers && !rooms) {
     return (
@@ -49,12 +28,6 @@ const AllCenter = () => {
         <h2 className="text-2xl font-bold mb-4">
           {centers && `Centres disponible :`}
         </h2>
-        <button
-          onClick={() => window.history.back()}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-        >
-          Retour
-        </button>
       </div>
       <input
         type="text"
@@ -68,7 +41,7 @@ const AllCenter = () => {
       <List
         items={filteredCenters}
         subItems={rooms}
-        parentItemIdField={"center_id"}
+        parentItemIdField={"id_center"}
         childItemRoute={"/room"}
         itemRoute={"center"}
         noItemPlaceholder={"Aucune salle disponible"}

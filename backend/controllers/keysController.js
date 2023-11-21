@@ -56,6 +56,7 @@ exports.update = async (req, res) => {
   try {
     const updatedKey = req.body;
     const key = await Key.updateById(req.params.id, updatedKey);
+    socket.emit("newKey");
     res.status(200).json(key);
   } catch (error) {
     handleError(res, error);
@@ -65,6 +66,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const key = await Key.delete(req.params.id);
+    socket.emit("newKey");
     res.status(200).json(key);
   } catch (error) {
     handleError(res, error);

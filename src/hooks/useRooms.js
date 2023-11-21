@@ -7,11 +7,11 @@ export function useRooms() {
   const [loading, setLoading] = useState(true);
   const BASE_URL = "http://localhost:3002";
 
-  const fetchRooms = async (ids = 0) => {
+  const fetchRooms = async (ids = 0, center = 1) => {
     setLoading(true);
     let URL = `${BASE_URL}/rooms/all`;
 
-    if (ids !== 0) {
+    if (ids !== 0 && center == 1) {
       let idQuerry;
       if (Array.isArray(ids)) {
         idQuerry = ids.map((item) => item.id);

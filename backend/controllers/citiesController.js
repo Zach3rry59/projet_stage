@@ -45,6 +45,7 @@ exports.update = async (req, res) => {
     const updatedCity = req.body;
     const city = await City.updateById(req.params.id, updatedCity);
     res.status(200).json(city);
+    socket.emit("newCity");
   } catch (error) {
     handleError(res, error);
   }
@@ -54,6 +55,7 @@ exports.delete = async (req, res) => {
   try {
     const city = await City.delete(req.params.id);
     res.status(200).json(city);
+    socket.emit("newCity");
   } catch (error) {
     handleError(res, error);
   }

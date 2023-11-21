@@ -56,6 +56,7 @@ exports.update = async (req, res) => {
   try {
     const updatedCenter = req.body;
     const center = await Center.updateById(req.params.id, updatedCenter);
+    socket.emit("newCenter");
     res.status(200).json(center);
   } catch (error) {
     handleError(res, error);
@@ -65,6 +66,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const center = await Center.delete(req.params.id);
+    socket.emit("newCenter");
     res.status(200).json(center);
   } catch (error) {
     handleError(res, error);

@@ -24,7 +24,7 @@ const City = () => {
 
   return (
     <div className="container mx-auto my-8 p-4 bg-gray-100 rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Recherchez une ville:</h2>
+      <h1 className="text-2xl font-bold mb-4">Recherchez une ville:</h1>
       <input
         type="text"
         value={searchText}
@@ -43,9 +43,10 @@ const City = () => {
         noItemPlaceholder={"Aucune centre disponible"}
         tableColumnHeaders={{
           name: "Nom du centre",
-          cp: "Code Postal",
+          phone: "N° de téléphone",
           adress: "Adresse",
         }}
+        showRowMobile={2}
       />
     </div>
   );

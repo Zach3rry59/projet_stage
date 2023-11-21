@@ -1,6 +1,7 @@
 const User = require("../models/usersModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const socket = require("../socket");
 
 exports.getAll = (req, res) => {
   User.getAll((err, data) => {
@@ -66,7 +67,7 @@ exports.create = (req, res) => {
   const newUser = new User({
     username: req.body.username,
     password: req.body.password,
-    is_admin: req.body.is_admin,
+    role: req.body.role,
   });
 
   User.create(newUser, (err, data) => {
@@ -77,12 +78,13 @@ exports.create = (req, res) => {
           "Une erreur s'est produite lors de la création de l'utilisateur.",
       });
     } else {
+      socket.emit("newUser");
       res.send({ Status: "Success", Data: data });
     }
   });
 };
 
-exports.updatePass = async (req, res) => {
+exports.update = async (req, res) => {
   const id = req.params.id;
   if (!req.body) {
     res.status(400).send({
@@ -97,8 +99,9 @@ exports.updatePass = async (req, res) => {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const updated = new User({
         password: hashedPassword,
+        role: req.body.role,
       });
-      User.updatePass(id, updated, (err, data) => {
+      User.update(id, updated, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
@@ -110,6 +113,7 @@ exports.updatePass = async (req, res) => {
             });
           }
         } else {
+          socket.emit("newUser");
           res.send({ data, Status: "OK" });
         }
       });
@@ -132,6 +136,7 @@ exports.delete = (req, res) => {
         });
       }
     } else {
+      socket.emit("newUser");
       res.send({ message: "Utilisateur supprimé avec succès !" });
     }
   });
@@ -176,9 +181,23 @@ exports.login = async (req, res) => {
         }
       );
 
+      const refreshToken = jwt.sign(
+        {
+          id: user.id,
+          username: user.username,
+          role: user.role,
+        },
+        process.env.JWT_SECRET
+      );
       res.cookie("token", token, {
         httpOnly: true,
         maxAge: 3600000,
+        path: "/",
+        sameSite: "strict",
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
         path: "/",
         sameSite: "strict",
       });
@@ -195,5 +214,6 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
   res.clearCookie("token");
+  res.clearCookie("refreshToken");
   res.json({ status: "Success" });
 };

@@ -58,6 +58,7 @@ exports.update = async (req, res) => {
   try {
     const updatedRoom = req.body;
     const room = await Room.updateById(req.params.id, updatedRoom);
+    socket.emit("newRoom");
     res.status(200).json(room);
   } catch (error) {
     handleError(res, error);
@@ -67,6 +68,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const room = await Room.delete(req.params.id);
+    socket.emit("newRoom");
     res.status(200).json(room);
   } catch (error) {
     handleError(res, error);

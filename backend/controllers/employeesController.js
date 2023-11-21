@@ -1,4 +1,5 @@
 const Employee = require("../models/employeesModel");
+const socket = require("../socket");
 
 const handleError = (res, error) => {
   console.error(error);
@@ -12,6 +13,7 @@ exports.create = async (req, res) => {
   try {
     const newEmployee = req.body;
     const employee = await Employee.create(newEmployee);
+    socket.emit("newEmployee");
     res.status(201).json(employee);
   } catch (error) {
     handleError(res, error);
@@ -40,6 +42,7 @@ exports.update = async (req, res) => {
   try {
     const updatedEmployee = req.body;
     const employee = await Employee.updateById(req.params.id, updatedEmployee);
+    socket.emit("newEmployee");
     res.status(200).json(employee);
   } catch (error) {
     handleError(res, error);
@@ -49,6 +52,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const employee = await Employee.delete(req.params.id);
+    socket.emit("newEmployee");
     res.status(200).json(employee);
   } catch (error) {
     handleError(res, error);

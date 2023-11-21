@@ -31,7 +31,7 @@ const Login = () => {
         <Formik initialValues={formData} validate={validate} onSubmit={login}>
           <Form className="mt-8 space-y-6">
             <div>
-              <label htmlFor="username" className={`block text-sm font-medium`}>
+              <label className={`block text-sm font-medium`}>
                 Nom d&apos;utilisateur
               </label>
               <Field
@@ -48,7 +48,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className={`block text-sm font-medium`}>
+              <label className={`block text-sm font-medium`}>
                 Mot de passe
               </label>
               <Field

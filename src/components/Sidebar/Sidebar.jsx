@@ -5,44 +5,36 @@ import { useState } from "react";
 
 const Sidebar = () => {
   const { logout, account } = useAuth();
-  const [showAdminLinks, setShowAdminLinks] = useState(false);
-  const toggleAdminLinks = () => {
-    setShowAdminLinks(!showAdminLinks);
-  };
 
   return (
     <nav className="h-screen p-4" id="sidebar">
       {account && account.role === 1 && (
-        <button className="btn" onClick={toggleAdminLinks}>
-          Menu admin
-        </button>
+        <button className="title text-white m-5">Administration</button>
       )}
 
-      {account && account.role === 1 && showAdminLinks && (
+      {account && account.role === 1 && (
         <Link className="btn" to={"/admin-city"}>
           Gestion villes
         </Link>
       )}
-      {account && account.role === 1 && showAdminLinks && (
+      {account && account.role === 1 && (
         <Link className="btn" to={"/admin-center"}>
           Gestion centres
         </Link>
       )}
-      {account && account.role === 1 && showAdminLinks && (
+      {account && account.role === 1 && (
         <Link className="btn" to={"/admin-employee"}>
-          Gestion employées
+          Gestion formateurs
         </Link>
       )}
-      {account && account.role === 1 && showAdminLinks && (
-        <Link className="btn" to={"/admin-key"}>
-          Gestion clés
-        </Link>
-      )}
-      {account && account.role === 1 && showAdminLinks && (
+      {account && account.role === 1 && (
         <Link className="btn" to={"/admin-user"}>
           Gestion utilisateurs
         </Link>
       )}
+
+      <button className="title text-white m-5">Menu</button>
+
       <Link className="btn" to={"/"}>
         Liste des villes
       </Link>
@@ -50,10 +42,10 @@ const Sidebar = () => {
         Liste des centres
       </Link>
       <Link className="btn" to={"/employee"}>
-        Liste des employées
+        Liste des formateurs
       </Link>
-      <button className="btn" onClick={logout}>
-        Se Déconnecter
+      <button className="logout" onClick={logout}>
+        Déconnexion
       </button>
     </nav>
   );

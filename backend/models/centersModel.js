@@ -2,7 +2,13 @@ const sql = require("../db/db");
 
 const Center = {};
 
-Center.create = (newCenter) => {
+Center.create = (center) => {
+  const newCenter = {
+    name: center.name,
+    adress: center.adress,
+    id_city: center.id_city,
+    phone: center.phone,
+  };
   return new Promise((resolve, reject) => {
     const query = "INSERT INTO center SET ?";
     sql.query(query, newCenter, (err, res) => {

@@ -6,6 +6,7 @@ dotenv.config("/.env");
 const app = express();
 const port = 3002;
 const socket = require("./socket");
+const axios = require("axios");
 
 app.use(express.json());
 app.use(
@@ -17,11 +18,18 @@ app.use(
 );
 app.use(cookieParser());
 
-const server = app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+app.get("/search", async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://api-adresse.data.gouv.fr/search/?q=${req.query.q}&type=municipality`
+    );
 
-socket.connect(server);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching geocoding data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 const usersRoute = require("./routes/usersRoute.js");
 app.use("/users", usersRoute);
@@ -34,4 +42,11 @@ app.use("/rooms", roomsRoute);
 const keysRoute = require("./routes/keysRoute.js");
 app.use("/keys", keysRoute);
 const employeesRoute = require("./routes/employeesRoute.js");
+
 app.use("/employees", employeesRoute);
+
+const server = app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+socket.connect(server);

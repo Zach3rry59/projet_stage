@@ -1,18 +1,26 @@
 import { useState } from "react";
 import CityEdit from "../../components/Admin/City/CityEdit/CityEdit";
-import CityList from "../../components/Admin/AdminList/AdminList";
+import AdminList from "../../components/Admin/AdminList/AdminList";
 import { useCities } from "../../hooks/useCities";
 import CityAdd from "../../components/Admin/City/CityAdd/CityAdd";
+import axios from "axios";
 
 const AdminCity = () => {
   const [selectedCity, setSelectedCity] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { cities } = useCities();
+  const [searchText, setSearchText] = useState("");
 
   const handleEditClick = (city) => {
     setSelectedCity(city);
     setIsModalOpen(true);
   };
+
+  const filteredCities = cities
+    ? cities.filter((city) =>
+        city.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    : [];
 
   const handleRemoveClick = (city) => {
     const isConfirmed = window.confirm(
@@ -20,7 +28,7 @@ const AdminCity = () => {
     );
 
     if (isConfirmed) {
-      console.log("City removed:", city.id);
+      axios.delete(`http://localhost:3002/cities/city/${city.id}`);
     }
   };
 
@@ -44,6 +52,14 @@ const AdminCity = () => {
   return (
     <div className="container mx-auto my-8 p-4 bg-gray-100 rounded-lg">
       <h1 className="text-2xl font-bold mb-4">Liste des Villes</h1>
+      <input
+        type="text"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        placeholder="Rechercher ville"
+        name="search"
+        className="border p-2 rounded mb-4"
+      />
       <div className="mb-4">
         <button
           onClick={handleAddCityClick}
@@ -53,16 +69,22 @@ const AdminCity = () => {
         </button>
         {isModalOpen &&
           (selectedCity ? (
-            <CityEdit city={selectedCity} onClose={handleModalClose} />
+            <CityEdit
+              cities={cities}
+              city={selectedCity}
+              onClose={handleModalClose}
+            />
           ) : (
-            <CityAdd onClose={handleModalClose} />
+            <CityAdd cities={cities} onClose={handleModalClose} />
           ))}
       </div>
-      <CityList
-        items={cities}
-        onRemoveClick={handleRemoveClick}
-        onEditClick={handleEditClick}
-      />
+      {!isModalOpen && (
+        <AdminList
+          items={filteredCities}
+          onRemoveClick={handleRemoveClick}
+          onEditClick={handleEditClick}
+        />
+      )}
     </div>
   );
 };

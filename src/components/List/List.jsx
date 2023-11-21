@@ -18,7 +18,6 @@ const List = ({
   const { openElements, toggle } = useToggle(itemRoute);
   const tableHeaders = Object.keys(tableColumnHeaders);
   const BASE_URL = "http://localhost:3002";
-
   const [employeeData, setEmployeeData] = useState({});
 
   useEffect(() => {
@@ -42,7 +41,6 @@ const List = ({
         console.error("Error fetching employee data:", error);
       });
   }, []);
-
   return (
     <ul className="border-gray-300">
       {items.map((item) => (
@@ -51,9 +49,9 @@ const List = ({
             className="flex justify-between cursor-pointer items-center"
             onClick={(e) => toggle(item.id, e)}
           >
-            <span>{item.name}</span>
+            <span>{item.cp ? item.name + ` (${item?.cp})` : item.name}</span>
             <div>
-              <span className="link hover:text-blue-500 m-10">
+              <span className="link hover:text-green-500 m-10">
                 <FaInfoCircle /> Détails
               </span>
               {openElements.includes(item.id) ? (
@@ -71,8 +69,8 @@ const List = ({
                 (subItem) => subItem[parentItemIdField] === item.id
               ).length > 0 ? (
                 <div className="overflow-x-auto">
-                  <table className="min-w-full">
-                    <thead className="bg-gray-200">
+                  <table className="min-w-full text-center">
+                    <thead className="bg-green-100">
                       <tr>
                         {tableHeaders.map((header, index) => (
                           <th
@@ -98,7 +96,7 @@ const List = ({
                             key={subItem.id}
                             className={`${
                               childItemRoute !== 0
-                                ? "cursor-pointer border hover:text-blue-500"
+                                ? "cursor-pointer border hover:text-green-700"
                                 : ""
                             }`}
                             onClick={() => {
@@ -108,7 +106,7 @@ const List = ({
                             }}
                           >
                             {tableHeaders.map((header, index) => {
-                              if (header === "employee_id") {
+                              if (header === "id_employee") {
                                 return (
                                   <td
                                     key={index}
@@ -118,15 +116,42 @@ const List = ({
                                         : "hidden md:table-cell"
                                     }`}
                                   >
-                                    {employeeData[subItem.employee_id]
+                                    {employeeData[subItem.id_employee]
                                       ? `${
-                                          employeeData[subItem.employee_id]
+                                          employeeData[subItem.id_employee]
                                             .firstname
                                         } ${
-                                          employeeData[subItem.employee_id]
+                                          employeeData[subItem.id_employee]
                                             .lastname
                                         }`
                                       : ""}
+                                  </td>
+                                );
+                              }
+                              if (
+                                header === "date_start" ||
+                                header === "date_end"
+                              ) {
+                                let date;
+                                if (subItem[header]) {
+                                  date = new Date(
+                                    subItem[header]
+                                  ).toLocaleDateString("fr-fr", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  });
+                                }
+                                return (
+                                  <td
+                                    key={index}
+                                    className={`p-2 ${
+                                      index < showRowMobile
+                                        ? ""
+                                        : "hidden md:table-cell"
+                                    }`}
+                                  >
+                                    {date}
                                   </td>
                                 );
                               } else {

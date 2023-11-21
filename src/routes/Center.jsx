@@ -1,34 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCities } from "../hooks/useCities";
 import { useCenters } from "../hooks/useCenters";
 import { useRooms } from "../hooks/useRooms";
 import { useParams } from "react-router-dom";
-import socketIOClient from "socket.io-client";
 import List from "../components/List/List";
-const BASE_URL = "http://localhost:3002";
 
 const Center = () => {
   const { cities } = useCities();
   const { centers } = useCenters();
-  const { rooms, fetchRooms } = useRooms();
+  const { rooms } = useRooms();
   const [searchText, setSearchText] = useState("");
   const { id } = useParams();
 
   const city = cities?.find((city) => city.id === parseInt(id));
   const cityCenters =
     centers?.filter((center) => center.id_city === parseInt(id)) ?? [];
-  useEffect(() => {
-    const socket = socketIOClient(BASE_URL);
-    fetchRooms(cityCenters);
-
-    socket.on("newRoom", () => {
-      fetchRooms(cityCenters);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [centers]);
 
   if (!city) {
     return (
@@ -52,7 +38,7 @@ const Center = () => {
         </h2>
         <button
           onClick={() => window.history.back()}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+          className="bg-green-700 text-white px-2 py-1 rounded hover:bg-green-800 focus:outline-none focus:ring focus:border-green-300 mb-2"
         >
           Retour
         </button>
@@ -69,7 +55,7 @@ const Center = () => {
       <List
         items={filteredCenters}
         subItems={rooms}
-        parentItemIdField={"center_id"}
+        parentItemIdField={"id_center"}
         childItemRoute={"/room"}
         itemRoute={"center"}
         noItemPlaceholder={"Aucune salle disponible"}

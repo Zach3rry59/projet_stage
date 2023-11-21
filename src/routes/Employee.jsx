@@ -1,26 +1,13 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import socketIOClient from "socket.io-client";
 import { useEmployee } from "../hooks/useEmployee";
 import ListEmployee from "../components/List/ListEmployee";
-const BASE_URL = "http://localhost:3002";
 
 const Employee = () => {
-  const { employees, fetchEmployees } = useEmployee();
+  const { employees } = useEmployee();
   const { id } = useParams();
 
-  useEffect(() => {
-    const socket = socketIOClient(BASE_URL);
-    fetchEmployees(id);
-
-    socket.on("newEmployee", () => {
-      fetchEmployees(id);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const employee = employees?.find((employee) => employee.id === parseInt(id));
+  const filteredEmployees = [employee];
 
   if (!employees) {
     return (
@@ -32,30 +19,16 @@ const Employee = () => {
 
   return (
     <div className="container mx-auto my-8 p-4 bg-gray-100 rounded-lg">
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Employée</h2>
-        <button
-          onClick={() => window.history.back()}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-        >
-          Retour
-        </button>
-      </div>
+      <h2 className="text-2xl font-bold mb-4">Formateurs</h2>
 
-      <ListEmployee
-        items={employees}
-        subItems={employees}
-        parentItemIdField={"id"}
-        itemRoute={"employee"}
-        noItemPlaceholder={"Aucune détails disponible"}
-        tableColumnHeaders={{
-          firstname: "prénom",
-          lastname: "nom",
-          phone: "téléphone",
-          email: "e-mail",
-        }}
-        showRowMobile={3}
-      />
+      <button
+        onClick={() => window.history.back()}
+        className="bg-green-700 text-white px-2 py-1 rounded hover:bg-green-800 focus:outline-none focus:ring focus:border-green-300 mb-2"
+      >
+        Retour
+      </button>
+
+      <ListEmployee employees={filteredEmployees} />
     </div>
   );
 };

@@ -78,10 +78,6 @@ User.create = (newUser, result) => {
       result({ Error: "Error : Username must be more than 3 character" }, null);
       return;
     }
-    if (newUser.email.length < 3) {
-      result({ Error: "Error : Email must not be empty" }, null);
-      return;
-    }
     newUser.password = hash;
     sql.query("INSERT INTO user SET ?", newUser, (err, res) => {
       if (err) {
@@ -96,10 +92,10 @@ User.create = (newUser, result) => {
   });
 };
 
-User.updatePass = (id, newUser, result) => {
+User.update = (id, newUser, result) => {
   sql.query(
-    "UPDATE user SET password = ?  WHERE id = ?",
-    [newUser.password, id],
+    "UPDATE user SET password = ?, role = ? WHERE id = ?",
+    [newUser.password, newUser.role, id],
     (err, res) => {
       if (err) {
         console.log("Error :", err);

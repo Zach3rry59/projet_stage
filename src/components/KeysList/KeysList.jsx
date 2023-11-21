@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { FaKey } from "react-icons/fa";
+import { useEmployee } from "../../hooks/useEmployee";
 
 const KeysList = ({ keys }) => {
+  const { employees } = useEmployee();
+
   if (!keys || keys.length === 0) {
     return <div>Aucune clé disponible</div>;
   }
@@ -9,13 +12,19 @@ const KeysList = ({ keys }) => {
   const sortedKeys = keys.sort((a, b) => (a.id_employee ? -1 : 1));
 
   return (
-    <div>
+    <div className="mb-3">
       <h2>Clé Disponible :</h2>
       <div className="flex items-center space-x-2">
-        {sortedKeys.map((key) =>
-          key.id_employee ? (
+        {sortedKeys.map((key) => {
+          const employee = employees?.find(
+            (employee) => employee && employee.id === parseInt(key.id_employee)
+          );
+          return key.id_employee ? (
             <Link to={`/employee/${key.id_employee}`} key={key.id}>
-              <div className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 transition duration-300 ease-in-out">
+              <div
+                className="bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition duration-300 ease-in-out"
+                title={`${employee.firstname} ${employee.lastname}`}
+              >
                 <FaKey />
               </div>
             </Link>
@@ -27,8 +36,8 @@ const KeysList = ({ keys }) => {
             >
               <FaKey />
             </div>
-          )
-        )}
+          );
+        })}
       </div>
     </div>
   );
