@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import "./App.css";
 import Login from "../components/Login/Login";
 import { AuthStatus, useAuth } from "../hooks/useAuth";
-import Sidebar from "../components/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useCities } from "../hooks/useCities";
 import { useCenters } from "../hooks/useCenters";
@@ -10,6 +8,7 @@ import socketIOClient from "socket.io-client";
 import { useEmployee } from "../hooks/useEmployee";
 import { useRooms } from "../hooks/useRooms";
 import { useKeys } from "../hooks/useKeys";
+import SidebarNav from "../components/Sidebar/Sidebar";
 
 function App() {
   const { status, authenticate } = useAuth();
@@ -24,6 +23,7 @@ function App() {
   useEffect(() => {
     authenticate();
   }, [status]);
+
   useEffect(() => {
     const socket = socketIOClient(BASE_URL);
     fetchRooms();
@@ -79,13 +79,10 @@ function App() {
     );
   }
   return (
-    <div id="container">
-      <div className="hidden md:block">
-        <Sidebar className="sidebar" />
-      </div>
-      <div className="main">
-        <Outlet />
-      </div>
+    <div id="container" className="bg-gray-100">
+      <SidebarNav />
+
+      <Outlet />
     </div>
   );
 }

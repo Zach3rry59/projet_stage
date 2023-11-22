@@ -13,7 +13,7 @@ const RoomEdit = ({ onClose, room, employees, id_center }) => {
       .toISOString()
       .slice(0, 19)
       .replace("T", " "),
-    infos: room?.info || "",
+    infos: room?.infos || "",
     formation_name: room?.formation_name || "",
     capacity: room?.capacity || undefined,
     computer: room?.computer || undefined,
@@ -118,6 +118,21 @@ const RoomEdit = ({ onClose, room, employees, id_center }) => {
               })),
             ]}
           />
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Informations suplémentaire:
+            </label>
+            <Field
+              as="textarea"
+              name="infos"
+              className="mt-1 p-2 w-full border rounded focus:outline-none focus:border-blue-500"
+            />
+            <ErrorMessage
+              name="infos"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
           <div className="flex justify-between">
             <button
               type="submit"

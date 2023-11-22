@@ -6,15 +6,15 @@ const KeysList = ({ keys }) => {
   const { employees } = useEmployee();
 
   if (!keys || keys.length === 0) {
-    return <div>Aucune clé disponible</div>;
+    return <div className="mb-3 text-center">Aucune clé disponible</div>;
   }
 
   const sortedKeys = keys.sort((a, b) => (a.id_employee ? -1 : 1));
 
   return (
-    <div className="mb-3">
+    <div className="mb-3 text-center">
       <h2>Clé Disponible :</h2>
-      <div className="flex items-center space-x-2">
+      <div className="flex justify-center items-center space-x-2">
         {sortedKeys.map((key) => {
           const employee = employees?.find(
             (employee) => employee && employee.id === parseInt(key.id_employee)

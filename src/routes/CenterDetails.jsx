@@ -14,6 +14,7 @@ const CenterDetails = () => {
     (center) => center && center.id === parseInt(id)
   );
 
+  const key = keys.filter((key) => key.id_center === parseInt(id) ?? []);
   const centerRooms =
     rooms?.filter((room) => room.id_center === parseInt(id)) ?? [];
 
@@ -30,10 +31,14 @@ const CenterDetails = () => {
   return (
     <div className="container mx-auto my-8 p-4 bg-gray-100 rounded-lg">
       <div>
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="text-2xl text-center font-bold mb-4">
           {center && `${center.name}`}
         </h2>
-        <KeysList keys={keys} />
+        <ul className="m-2 bg-white rounded px-2 py-2 text-center">
+          <li>Adresse : {center.adress}</li>
+          <li>N° de téléphone : {center.phone}</li>
+        </ul>
+        <KeysList keys={key} className="" />
         <button
           onClick={() => window.history.back()}
           className="bg-green-700 text-white px-2 py-1 rounded hover:bg-green-800 focus:outline-none focus:ring focus:border-green-300 mb-2"

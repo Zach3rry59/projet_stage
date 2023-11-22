@@ -25,21 +25,9 @@ body {
   margin: 0;
   line-height: 1.5;
   color: #121212;
+  background-color: rgb(243 244 246);
 }
 
-.btn {
-  font-size: 1rem;
-  font-family: inherit;
-  border: none;
-  border-radius: 3px;
-  padding: 0.5rem 0.75rem;
-  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
-  background-color: white;
-  line-height: 1.5;
-  margin: 0.4em;
-  color: #121212;
-  font-weight: 500;
-}
 .logout {
   font-size: 1rem;
   font-family: inherit;
@@ -54,38 +42,16 @@ body {
   background-color: #ff4539;
   font-weight: 500;
 }
-.title {
-  background-color: #3d9446;
-}
 
 .logout:hover {
   background-color: rgb(214, 58, 47);
   box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
 }
-.btn:hover {
-  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+
+#container {
+  display: flex;
 }
 
-.btn:active {
-  box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.4);
-  transform: translateY(1px);
-}
-
-@media (min-width: 768px) {
-  #container {
-    display: grid;
-    grid-auto-columns: 1fr;
-    grid-auto-rows: 1fr;
-    grid-template-columns: 0.2fr 1fr;
-    gap: 0px 0px;
-  }
-  .main {
-    grid-area: 1 / 2 / 2 / 3;
-  }
-  .sidebar {
-    grid-area: 1 / 1 / 2 / 2;
-  }
-}
 #error-page {
   display: flex;
   flex-direction: column;

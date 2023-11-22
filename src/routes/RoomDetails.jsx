@@ -4,6 +4,7 @@ import { useCities } from "../hooks/useCities";
 import { useParams } from "react-router-dom";
 import { IoDesktopOutline } from "react-icons/io5";
 import { IoPersonCircleOutline } from "react-icons/io5";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useEmployee } from "../hooks/useEmployee";
 
 const RoomDetails = () => {
@@ -65,14 +66,29 @@ const RoomDetails = () => {
           Retour
         </button>
       </div>
-      <div className="flex items-center p-2">
-        <IoPersonCircleOutline className="text-blue-500 mr-2" size={32} />
-        <span className="text-gray-700">
-          Capacité: {room.capacity} personnes
-        </span>
-        <IoDesktopOutline size={32} color="#007bff" />
-
-        <span className="text-gray-700"> {room.computer} Ordinateurs</span>
+      {room.infos && (
+        <div className="text-center bg-white border rounded">
+          <InfoOutlinedIcon className="bg-blue-500 text-white rounded" />
+          Informations suplémentaire :<div>{room.infos}</div>
+        </div>
+      )}
+      <div className="flex justify-center md:flex-row items-center p-2">
+        {room.capacity && (
+          <div className="flex items-center mb-2 md:mb-0">
+            <IoPersonCircleOutline className="text-blue-500 mr-2" size={32} />
+            <span className="text-gray-700">
+              Capacité: {room.capacity} personnes
+            </span>
+          </div>
+        )}
+        {room.computer && (
+          <div className="flex items-center ml-0 md:ml-4">
+            <IoDesktopOutline size={32} color="#007bff" />
+            <span className="text-gray-700 ml-2">
+              {room.computer} Ordinateurs
+            </span>
+          </div>
+        )}
       </div>
       <table className="min-w-full text-center">
         <thead className="bg-green-100">

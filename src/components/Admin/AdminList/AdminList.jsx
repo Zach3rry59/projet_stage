@@ -23,12 +23,16 @@ const AdminList = ({
         return (
           <li
             key={item.id}
-            className="bg-white p-4 mb-2 rounded shadow flex justify-between items-center"
+            className="bg-white p-4 mb-2 rounded shadow flex flex-col md:flex-row justify-between items-center"
           >
-            {item.name} {item.firstname} {item.lastname} {item.username}
-            {city && <span>{city.name}</span>}
-            {keys && <span>Clé {index + 1}</span>}
-            <div>
+            <div className="flex items-center">
+              <span>
+                {item.name} {item.firstname} {item.lastname} {item.username}
+              </span>
+              {city && <span className="ml-2">{city.name}</span>}
+              {keys && <span className="ml-2">Clé {index + 1}</span>}
+            </div>
+            <div className="flex items-center mt-2 md:mt-0">
               {city && (
                 <>
                   <button
@@ -48,13 +52,13 @@ const AdminList = ({
 
               <button
                 onClick={() => onEditClick(item)}
-                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 m-1"
               >
                 Editer
               </button>
               <button
                 onClick={() => onRemoveClick(item)}
-                className="text-red-500 px-2 py-1 rounded hover:bg-red-200 focus:outline-none focus:ring focus:border-red-300"
+                className="text-red-500 px-2 py-1 rounded hover:bg-red-200 focus:outline-none focus:ring focus:border-red-300 m-1"
               >
                 Supprimer
               </button>

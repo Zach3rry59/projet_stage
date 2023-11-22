@@ -112,6 +112,21 @@ const RoomAdd = ({ onClose, employees, id_center }) => {
               })),
             ]}
           />
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-600">
+              Informations suplémentaire:
+            </label>
+            <Field
+              as="textarea"
+              name="infos"
+              className="mt-1 p-2 w-full border rounded focus:outline-none focus:border-blue-500"
+            />
+            <ErrorMessage
+              name="infos"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
           <div className="flex justify-between">
             <button
               type="submit"
