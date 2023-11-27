@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useCenters } from "../hooks/useCenters";
 import { useRooms } from "../hooks/useRooms";
 import List from "../components/List/List";
+import { useCities } from "../hooks/useCities";
 
 const AllCenter = () => {
+  const { cities } = useCities();
   const { centers } = useCenters();
   const { rooms } = useRooms();
   const [searchText, setSearchText] = useState("");
@@ -16,8 +18,19 @@ const AllCenter = () => {
     );
   }
 
-  const filteredCenters = centers
-    ? centers.filter((center) =>
+  const centersWithCityName = centers
+    ? centers.map((center) => {
+        const matchingCity = cities?.find((city) => city.id === center.id_city);
+        return {
+          ...center,
+          name: matchingCity
+            ? `${center.name}  (${matchingCity.name})`
+            : "Unknown City",
+        };
+      })
+    : [];
+  const filteredCenters = centersWithCityName
+    ? centersWithCityName.filter((center) =>
         center.name.toLowerCase().includes(searchText.toLowerCase())
       )
     : [];

@@ -14,7 +14,7 @@ const CenterDetails = () => {
     (center) => center && center.id === parseInt(id)
   );
 
-  const key = keys.filter((key) => key.id_center === parseInt(id) ?? []);
+  const key = keys?.filter((key) => key.id_center === parseInt(id) ?? []);
   const centerRooms =
     rooms?.filter((room) => room.id_center === parseInt(id)) ?? [];
 

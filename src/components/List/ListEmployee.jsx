@@ -23,7 +23,9 @@ const ListEmployee = ({ employees, infos }) => {
                 {employee.firstname} {employee.lastname}
               </td>
               <td className={`p-2`}>{employee.formation}</td>
-              <td className={`p-2`}>{employee.phone}</td>
+              <td className={`p-2`}>
+                <input type="tel" disabled value={employee.phone} />
+              </td>
               <td className={`p-2 hidden md:table-cell`}>{employee.email}</td>
               {infos && (
                 <td>
